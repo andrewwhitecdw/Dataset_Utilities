@@ -32,7 +32,7 @@ This project is a collection of Python scripts to help work with datasets for de
 
 _Using ssh path:_
 ```
-git clone ssh://git@github.com:12051/NVIDIA/Dataset_Utilities.git
+git clone ssh://git@github.com/NVIDIA/Dataset_Utilities.git
 ```
 _Using https path:_
 ```
