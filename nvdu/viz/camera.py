@@ -75,6 +75,7 @@ class Camera(SceneObjectViz3d):
         # self.build_perspective_projection_matrix()
         new_cam_instrinsics = CameraIntrinsicSettings.from_perspective_fov_horizontal(
             self.intrinsic_settings.res_width, self.intrinsic_settings.res_height, new_fovx)
+        self.set_instrinsic_settings(new_cam_instrinsics)
 
     def build_perspective_projection_matrix(self):
         zdiff = float(self.znear - self.zfar)
