@@ -7,7 +7,7 @@ from .scene_object import *
 class Box2d(SceneObject):
     # Create a box from its border
     def __init__(self, left, right, top, bottom):
-        super(BoundingBox2d, self).__init__()
+        super(Box2d, self).__init__()
         
         self.left = left
         self.right = right
@@ -16,11 +16,11 @@ class Box2d(SceneObject):
 
         self.generate_vertexes()
 
-    def get_width():
+    def get_width(self):
         return (self.right - self.left)
 
-    def get_height():
+    def get_height(self):
         return (self.bottom - self.top)
 
-    def get_size():
+    def get_size(self):
         return [self.get_width(), self.get_height()]
