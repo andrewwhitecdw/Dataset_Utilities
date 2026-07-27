@@ -10,8 +10,7 @@ from .utils3d import *
 
 class CameraIntrinsicSettings(object):
     DEFAULT_ZNEAR = 1
-    # DEFAULT_ZFAR = 100000.0
-    DEFAULT_ZFAR = DEFAULT_ZNEAR
+    DEFAULT_ZFAR = 100000.0
     
     def __init__(self,
             res_width = 640.0, res_height = 480.0,
@@ -128,5 +127,5 @@ class CameraIntrinsicSettings(object):
             [0, 0, -1.0, 0]
         ])
 
-    def str():
+    def str(self):
         return "{}".format(self.get_intrinsic_matrix())
