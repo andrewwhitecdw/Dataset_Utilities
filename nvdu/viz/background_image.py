@@ -28,8 +28,10 @@ class BackgroundImage(object):
 
     @classmethod
     def create_from_file_path(cls, image_file_path, width = 0, height = 0):
-        image_np = np.array(cv2.imread(image_file_path))
-        image_np = image_np[:,:,::-1]  # Convert BGR to RGB format.  Alternatively, use cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        image = cv2.imread(image_file_path)
+        if image is None:
+            raise IOError("Could not load image: {}".format(image_file_path))
+        image_np = image[:,:,::-1]  # Convert BGR to RGB format.  Alternatively, use cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         return cls.create_from_numpy_image_data(image_np, width, height)
     
     def load_image_data_from_numpy(self, numpy_image_data):
