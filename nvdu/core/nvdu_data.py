@@ -134,11 +134,11 @@ class NVDUDataset(object):
 
     @property
     def camera_setting_file_path(self):
-        return NVDUDataset.get_camera_setting_file_path(self._dataset_dir)
+        return NVDUDataset.get_default_camera_setting_file_path(self._dataset_dir)
 
     @property
     def object_setting_file_path(self):
-        return NVDUDataset.get_object_setting_file_path(self._dataset_dir)
+        return NVDUDataset.get_default_object_setting_file_path(self._dataset_dir)
     
     # Scane the dataset and return how many frames are in it
     def scan(self):
@@ -175,10 +175,10 @@ class NVDUDataset(object):
         return self._frame_count
 
     def get_image_file_path_of_frame(self, in_frame_name):
-        for existing_file in glob.glob(in_frame_name + '*'):
+        for existing_file in glob.glob(path.join(self._dataset_dir, in_frame_name + '*')):
             for name_filter in self._img_name_filters:
-                if fnmatch.fnmatch(existing_file, name_filter):
-                    return path.join(self._dataset_dir, existing_file)
+                if fnmatch.fnmatch(path.basename(existing_file), name_filter):
+                    return existing_file
 
         raise Exception('File not found: {}.*'.format(in_frame_name))
     
@@ -217,7 +217,7 @@ class ExportedObjectSettings(object):
     def __init__(self, name = '', mesh_file_path = '', initial_matrix = None,
             cuboid_dimension = Vector3([0, 0, 0]), cuboid_center = Vector3([0, 0, 0]),
             coord_system = CoordinateSystem(), obj_class_id = 0, obj_color = None):
-        self.name = ''
+        self.name = name
         self.mesh_file_path = mesh_file_path
         self.initial_matrix = initial_matrix
 
@@ -265,6 +265,8 @@ class DatasetSettings():
     @classmethod
     def parse_from_json_data(cls, json_data, mesh_dir_path=''):
         parsed_settings = DatasetSettings(mesh_dir_path)
+        
+        parsed_settings.exporter_settings = ExporterSettings.parse_from_json_data(json_data)
         
         coord_system = None
         parsed_settings.coord_system = coord_system
