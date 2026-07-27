@@ -211,6 +211,10 @@ class NVDUVizWindow(pyglet.window.Window):
         if (self.auto_change_frame == new_bool):
             return
 
+        if (new_bool and self.auto_fps <= 0):
+            print("auto_fps is not set, cannot start auto changing frame")
+            return
+
         self.auto_change_frame = new_bool
         if (self.auto_change_frame):
             print("Start auto changing frame ...")
