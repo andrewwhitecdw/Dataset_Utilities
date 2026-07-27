@@ -167,12 +167,13 @@ class Cuboid3d(SceneObject):
         tvec = [0, 0, 0]
         dist_coeffs = np.zeros((4, 1))
 
-        transformed_vertices = [0, 0, 0] * CuboidVertexType.TotalVertexCount
+        transformed_vertices = []
         for vertex_index in range(CuboidVertexType.TotalVertexCount):
             vertex3d = self._vertices[vertex_index]
-            transformed_vertices[vertex_index] = world_transform_matrix * vertex3d
+            transformed_vertices.append(world_transform_matrix * vertex3d)
+        transformed_vertices = np.array(transformed_vertices, dtype=np.float32)
 
-        projected_vertices = cv2.projectPoints(transformed_vertices, rvec, tvec, 
+        projected_vertices, _ = cv2.projectPoints(transformed_vertices, rvec, tvec, 
                                 camera_intrinsic_matrix, dist_coeffs)
 
-        return Cuboid2d(projected_vertices)
+        return Cuboid2d(projected_vertices.reshape(-1, 2))
