@@ -41,26 +41,26 @@ class Rotator():
 
     @property
     def yaw(self):
-        return self.angle[1]
+        return self.angles[1]
 
     @property
     def pitch(self):
-        return self.angle[0]
+        return self.angles[0]
     
     @property
     def roll(self):
-        return self.angle[2]
+        return self.angles[2]
 
     @staticmethod
     def create_from_yaw_pitch_roll(yaw = 0, pitch = 0, roll = 0):
-        return rotator([pitch, yaw, roll])
+        return Rotator([pitch, yaw, roll])
 
     @staticmethod
     def create_from_yaw_pitch_roll_degree(yaw = 0, pitch = 0, roll = 0):
-        return rotator([np.deg2rad(pitch), np.deg2rad(yaw), np.deg2rad(roll)])
+        return Rotator([np.deg2rad(pitch), np.deg2rad(yaw), np.deg2rad(roll)])
 
     def add(self, other_rotator):
-        return rotator([
+        return Rotator([
             self.angles[0] + other_rotator.angles[0],
             self.angles[1] + other_rotator.angles[1],
             self.angles[2] + other_rotator.angles[2],
