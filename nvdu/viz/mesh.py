@@ -28,7 +28,7 @@ class Model3dManager(object):
             return self.model_map[model_path]
 
         if (auto_load):
-            self.load_model(model_path)
+            return self.load_model(model_path)
 
         return None
 
