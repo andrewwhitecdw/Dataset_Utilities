@@ -18,7 +18,7 @@ from .camera import *
 from .cuboid import *
 from .viewport import *
 from .pointcloud import *
-# from .pivot_axis import *
+from .pivot_axis import *
 from .mesh import *
 from .background_image import *
 
@@ -55,8 +55,8 @@ class AnnotatedObjectViz(object):
         self.is_modified = False
 
     def update_transform(self):
-        # print('update_transform: location: {} - quaternion: {}'.format(self.location, self.quaternion))
-        should_show = not (self.location is None) and not (self.quaternion is None)
+        # print('update_transform: location: {} - quaternion: {}'.format(self.object_info.location, self.object_info.quaternion))
+        should_show = not (self.object_info.location is None) and not (self.object_info.quaternion is None)
         if (self.mesh):
             self.mesh.set_visibility(should_show)
 
@@ -72,8 +72,11 @@ class AnnotatedObjectViz(object):
         if (self.is_modified):
             self.update_transform()
 
+        if (visualizer_settings is None):
+            return
+
         glPolygonMode(GL_FRONT_AND_BACK, visualizer_settings.render_mode)
-        if ((visualizer_settings is None) or visualizer_settings.show_mesh) and self.mesh:
+        if (visualizer_settings.show_mesh) and self.mesh:
             self.mesh.draw()
         
         if ((visualizer_settings is None) or visualizer_settings.show_cuboid3d) and self.cuboid3d:
@@ -153,7 +156,12 @@ class AnnotatedSceneViz(object):
                 anchor_x='left', anchor_y='baseline')
 
     def set_image_data(self, new_image_numpy_data):
-        img_width, img_height = self.dataset_settings.exporter_settings.captured_image_size
+        dataset_settings = self._scene_info.dataset_settings
+        if not (dataset_settings is None or dataset_settings.exporter_settings is None):
+            img_width, img_height = dataset_settings.exporter_settings.captured_image_size
+        else:
+            img_width = self.camera_intrinsics.res_width
+            img_height = self.camera_intrinsics.res_height
         print("set_image_data - img_width: {} - img_height: {}".format(img_width, img_height))
         if (self.background_image is None):
             self.background_image = BackgroundImage.create_from_numpy_image_data(new_image_numpy_data, img_width, img_height)
