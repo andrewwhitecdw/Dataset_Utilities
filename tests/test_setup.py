@@ -18,13 +18,19 @@ def _load_setup_module(setup_path="setup.py"):
     mock_setuptools.Command = MagicMock()
     mock_setuptools.find_packages = list
     mock_setuptools.setup = lambda **kwargs: None
+    original_setuptools = sys.modules.get("setuptools")
     sys.modules["setuptools"] = mock_setuptools
-
-    with patch("builtins.print"):
-        with patch("builtins.open", MagicMock()) as mock_open:
-            mock_open.return_value.__enter__.return_value.read.return_value = ""
-            with patch("os.listdir", return_value=[]):
-                spec.loader.exec_module(module)
+    try:
+        with patch("builtins.print"):
+            with patch("builtins.open", MagicMock()) as mock_open:
+                mock_open.return_value.__enter__.return_value.read.return_value = ""
+                with patch("os.listdir", return_value=[]):
+                    spec.loader.exec_module(module)
+    finally:
+        if original_setuptools is not None:
+            sys.modules["setuptools"] = original_setuptools
+        else:
+            sys.modules.pop("setuptools", None)
 
     return module
 
