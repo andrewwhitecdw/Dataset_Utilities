@@ -2,10 +2,9 @@
 # This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International 
 # License.  (https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
 
-from setuptools import Command, find_packages, setup
+from setuptools import find_packages, setup
 import os
 from os import path
-import glob
 
 __version_info__ = (1, 0, 0, 1)
 _ROOT = os.path.abspath(os.path.dirname(__file__))
