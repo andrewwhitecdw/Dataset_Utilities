@@ -15,7 +15,8 @@ _ROOT = os.path.abspath(os.path.dirname(__file__))
 # README file and 2) it's easier to type in the README file than to put a raw
 # string in below ...
 def read(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+    with open(os.path.join(os.path.dirname(__file__), fname)) as f:
+        return f.read()
 
 def get_all_files(find_dir):
     all_files = []
@@ -30,6 +31,7 @@ def get_all_files(find_dir):
 
 all_config_files = get_all_files(path.join(_ROOT, path.join('nvdu', 'config')))
 print("all_config_files: {}".format(all_config_files))
+package_rel_config_files = [path.relpath(f, path.join(_ROOT, 'nvdu')) for f in all_config_files]
 
 __version__ = '.'.join(map(str, __version_info__))
 
@@ -57,7 +59,7 @@ setup(
     ],
     keywords = "nvdu, nvidia",
     packages=find_packages(),
-    package_data={'': all_config_files},
+    package_data={'nvdu': package_rel_config_files},
     include_package_data=True,
     install_requires = [
         "numpy",
